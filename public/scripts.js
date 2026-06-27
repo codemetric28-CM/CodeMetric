@@ -108,3 +108,74 @@ if (window.AOS) { AOS.init({ duration: 700, once: true, offset: 60, easing: 'eas
       submitBtn.style.opacity = '1';
     }
   });
+
+  // Contact / Login / Register flip card (all live on the same card now)
+  const contactFlipInner = document.getElementById('contactFlipInner');
+  const authFlipInner    = document.getElementById('authFlipInner');
+  const loginNavBtn      = document.getElementById('loginNavBtn');
+  const toRegister       = document.getElementById('toRegister');
+  const toLogin          = document.getElementById('toLogin');
+  const loginForm        = document.getElementById('loginForm');
+  const registerForm     = document.getElementById('registerForm');
+
+  function goToContact(showLogin) {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!contactFlipInner) return;
+
+    if (showLogin) {
+      contactFlipInner.classList.add('flipped');           // rotate right -> show Login/Register face
+      if (authFlipInner) authFlipInner.classList.remove('flipped'); // always land on Login first
+    } else {
+      contactFlipInner.classList.remove('flipped');         // rotate back -> show normal Contact form
+    }
+  }
+
+  // The Login button: scroll to the same card, then flip right to it
+  if (loginNavBtn) {
+    loginNavBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      goToContact(true);
+    });
+  }
+
+  // Every other link/button pointing at #contact (nav "Contact", footer link,
+  // "Start a Project" buttons) just scrolls as usual and makes sure the
+  // normal Contact form is showing (flips back if Login/Register was open)
+  document.querySelectorAll('a[href="#contact"]').forEach((link) => {
+    if (link.id === 'loginNavBtn') return; // handled above
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      goToContact(false);
+    });
+  });
+
+  // "Create an account" inside the Login form: flip up to Register
+  if (toRegister && authFlipInner) {
+    toRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      authFlipInner.classList.add('flipped');
+    });
+  }
+
+  // "Log in" inside the Register form: flip back down to Login
+  if (toLogin && authFlipInner) {
+    toLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      authFlipInner.classList.remove('flipped');
+    });
+  }
+
+  // Placeholder submit handling until a real auth backend is wired up
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Login is not connected to a backend yet.', 'error');
+    });
+  }
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Registration is not connected to a backend yet.', 'error');
+    });
+  }

@@ -59,7 +59,7 @@
       <a href="#contact">Contact</a>
     </nav>
     <div class="nav-cta">
-      <a href="#contact" class="btn btn--ghost">Login</a>
+      <a href="#contact" class="btn btn--ghost" id="loginNavBtn">Login</a>
       <a href="#contact" class="btn btn--primary">Start a Project</a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -391,45 +391,97 @@
     </div>
 
     <div class="contact-grid">
-      <div class="contact-form" data-aos="fade-up">
-        <form id="contactForm">
-          <div class="form-row">
-            <div class="field">
-              <label for="cf-name">Full name</label>
-              <input type="text" id="cf-name" placeholder="Your name" required>
-            </div>
-            <div class="field">
-              <label for="cf-email">Email address</label>
-              <input type="email" id="cf-email" placeholder="you@company.com" required>
+      <div class="contact-flip" data-aos="fade-up">
+        <div class="contact-flip-inner" id="contactFlipInner">
+
+          <!-- FRONT FACE: Contact form (unchanged) -->
+          <div class="contact-form flip-face flip-face--front" id="contactFace">
+            <form id="contactForm">
+              <div class="form-row">
+                <div class="field">
+                  <label for="cf-name">Full name</label>
+                  <input type="text" id="cf-name" placeholder="Your name" required>
+                </div>
+                <div class="field">
+                  <label for="cf-email">Email address</label>
+                  <input type="email" id="cf-email" placeholder="you@company.com" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="field full">
+                  <label for="cf-subject">What are you building?</label>
+                  <select id="cf-subject">
+                    <option>Web Development</option>
+                    <option>Mobile App Development</option>
+                    <option>UI/UX Design</option>
+                    <option>Cloud &amp; DevOps</option>
+                    <option>Cybersecurity</option>
+                    <option>Data &amp; Analytics</option>
+                    <option>Something else</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="field full">
+                  <label for="cf-message">Project details</label>
+                  <textarea id="cf-message" placeholder="A few lines about what you're trying to build..." required></textarea>
+                </div>
+              </div>
+              <button type="submit" class="btn btn--primary">Send Message</button>
+              <p class="form-note">We typically respond within one business day.</p>
+            </form>
+            <div class="form-success" id="formSuccess">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E5F4F4"/><path d="M7 12.5l3 3 7-7" stroke="#0A7EA4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <h3 style="margin-bottom:8px;">Message sent</h3>
+              <p style="color:var(--ink-soft);">Thanks for reaching out — a member of our team will be in touch within one business day.</p>
             </div>
           </div>
-          <div class="form-row">
-            <div class="field full">
-              <label for="cf-subject">What are you building?</label>
-              <select id="cf-subject">
-                <option>Web Development</option>
-                <option>Mobile App Development</option>
-                <option>UI/UX Design</option>
-                <option>Cloud &amp; DevOps</option>
-                <option>Cybersecurity</option>
-                <option>Data &amp; Analytics</option>
-                <option>Something else</option>
-              </select>
+
+          <!-- BACK FACE: Login / Register (its own up/down flip nested inside) -->
+          <div class="contact-form flip-face flip-face--back" id="authFace">
+            <div class="auth-flip-inner" id="authFlipInner">
+
+              <div class="auth-face auth-face--front">
+                <div class="eyebrow">Welcome Back</div>
+                <h2 style="font-size:26px;margin:10px 0 24px;">Log in to your account</h2>
+                <form id="loginForm">
+                  <div class="field full">
+                    <label for="li-email">Email address</label>
+                    <input type="email" id="li-email" placeholder="you@company.com" required>
+                  </div>
+                  <div class="field full">
+                    <label for="li-password">Password</label>
+                    <input type="password" id="li-password" placeholder="••••••••" required>
+                  </div>
+                  <button type="submit" class="btn btn--primary">Log In</button>
+                  <p class="form-note">New here? <a href="#" id="toRegister" class="auth-link">Create an account</a></p>
+                </form>
+              </div>
+
+              <div class="auth-face auth-face--back">
+                <div class="eyebrow">Get Started</div>
+                <h2 style="font-size:26px;margin:10px 0 24px;">Create your account</h2>
+                <form id="registerForm">
+                  <div class="field full">
+                    <label for="rg-name">Full name</label>
+                    <input type="text" id="rg-name" placeholder="Your name" required>
+                  </div>
+                  <div class="field full">
+                    <label for="rg-email">Email address</label>
+                    <input type="email" id="rg-email" placeholder="you@company.com" required>
+                  </div>
+                  <div class="field full">
+                    <label for="rg-password">Password</label>
+                    <input type="password" id="rg-password" placeholder="Create a password" required>
+                  </div>
+                  <button type="submit" class="btn btn--primary">Create Account</button>
+                  <p class="form-note">Already have an account? <a href="#" id="toLogin" class="auth-link">Log in</a></p>
+                </form>
+              </div>
+
             </div>
           </div>
-          <div class="form-row">
-            <div class="field full">
-              <label for="cf-message">Project details</label>
-              <textarea id="cf-message" placeholder="A few lines about what you're trying to build..." required></textarea>
-            </div>
-          </div>
-          <button type="submit" class="btn btn--primary">Send Message</button>
-          <p class="form-note">We typically respond within one business day.</p>
-        </form>
-        <div class="form-success" id="formSuccess">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#E5F4F4"/><path d="M7 12.5l3 3 7-7" stroke="#0A7EA4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <h3 style="margin-bottom:8px;">Message sent</h3>
-          <p style="color:var(--ink-soft);">Thanks for reaching out — a member of our team will be in touch within one business day.</p>
+
         </div>
       </div>
 

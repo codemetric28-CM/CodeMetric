@@ -367,6 +367,32 @@ h1,h2,h3,h4{
 .projects-grid--single{grid-template-columns:1fr;max-width:420px;margin:0 auto;}
 
 /* ============================================================
+   CONTACT / LOGIN / REGISTER FLIP CARD
+============================================================ */
+.contact-flip{perspective:1800px;}
+.contact-flip-inner{
+  position:relative;width:100%;min-height:560px;
+  transform-style:preserve-3d;
+  transition:transform .8s cubic-bezier(.45,.05,.15,1);
+}
+.contact-flip-inner.flipped{transform:rotateY(180deg);}
+
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;overflow-y:auto;}
+.flip-face--back{transform:rotateY(180deg);}
+
+.auth-flip-inner{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;
+  transition:transform .8s cubic-bezier(.45,.05,.15,1);
+}
+.auth-flip-inner.flipped{transform:rotateX(180deg);}
+.auth-face{position:absolute;inset:0;backface-visibility:hidden;overflow-y:auto;}
+.auth-face--back{transform:rotateX(180deg);}
+.auth-face .field{margin-bottom:18px;}
+.auth-face .btn{width:100%;margin-top:6px;}
+.auth-link{color:var(--teal-deep);font-weight:600;text-decoration:none;}
+
+/* ============================================================
    CONTACT
 ============================================================ */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
