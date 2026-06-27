@@ -1,25 +1,15 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
-
-// Gmail transporter setup
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD
-  }
-});
 
 // Contact form endpoint
 app.post('/api/contact', async (req, res) => {
@@ -44,10 +34,10 @@ app.post('/api/contact', async (req, res) => {
 
   try {
     // Email to YOUR company (notification)
-    const companyMailOptions = {
-      from: `"Contact Form" <${process.env.GMAIL_USER}>`,
-      to: process.env.GMAIL_USER,                        // Receives to your Gmail
-      replyTo: email,                                     // Reply goes to the customer
+    await resend.emails.send({
+      from: 'Contact Form <onboarding@resend.dev>',
+      to: process.env.COMPANY_EMAIL,
+      reply_to: email,
       subject: `New Inquiry: ${projectType} — ${fullName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; border-radius: 8px;">
@@ -80,11 +70,11 @@ app.post('/api/contact', async (req, res) => {
           </p>
         </div>
       `
-    };
+    });
 
     // Auto-reply to the CUSTOMER
-    const customerMailOptions = {
-      from: `"Your Company" <${process.env.GMAIL_USER}>`,
+    await resend.emails.send({
+      from: 'Code Metric <onboarding@resend.dev>',
       to: email,
       subject: `We received your message, ${fullName}!`,
       html: `
@@ -97,14 +87,14 @@ app.post('/api/contact', async (req, res) => {
             We've received your message about <strong>${projectType}</strong> and will get back to you within one business day.
           </p>
           
-          <div style="background: #fff; border-left: 4px solid #000; padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+          <div style="background: #fff; border-left: 4px solid #0A7EA4; padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0;">
             <p style="margin: 0; color: #666; font-size: 14px;"><strong>Your message:</strong></p>
             <p style="margin: 10px 0 0; color: #333; white-space: pre-wrap;">${projectDetails}</p>
           </div>
           
           <p style="color: #333; line-height: 1.6;">
             Best regards,<br>
-            <strong>The Team</strong>
+            <strong>Code Metric Team</strong>
           </p>
           
           <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;">
@@ -113,11 +103,7 @@ app.post('/api/contact', async (req, res) => {
           </p>
         </div>
       `
-    };
-
-    // Send both emails
-    await transporter.sendMail(companyMailOptions);
-    await transporter.sendMail(customerMailOptions);
+    });
 
     res.status(200).json({
       success: true,
