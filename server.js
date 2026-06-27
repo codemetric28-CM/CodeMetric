@@ -35,7 +35,7 @@ app.post('/api/contact', async (req, res) => {
   try {
     // Email to YOUR company (notification)
     await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>',
+      from: 'Contact Form <noreply@codemetric.in>',
       to: process.env.COMPANY_EMAIL,
       reply_to: email,
       subject: `New Inquiry: ${projectType} — ${fullName}`,
@@ -74,7 +74,7 @@ app.post('/api/contact', async (req, res) => {
 
     // Auto-reply to the CUSTOMER
     await resend.emails.send({
-      from: 'Code Metric <onboarding@resend.dev>',
+      from: 'Code Metric <noreply@codemetric.in>',
       to: email,
       subject: `We received your message, ${fullName}!`,
       html: `
