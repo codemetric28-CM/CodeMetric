@@ -1,0 +1,157 @@
+const express = require('express');
+const { Resend } = require('resend');
+const cors = require('cors');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static('public'));
+
+// Contact form endpoint
+app.post('/api/contact', async (req, res) => {
+  const { fullName, email, projectType, projectDetails } = req.body;
+
+  // Basic validation
+  if (!fullName || !email || !projectType || !projectDetails) {
+    return res.status(400).json({
+      success: false,
+      message: 'All fields are required.'
+    });
+  }
+
+  // Email format check
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please enter a valid email address.'
+    });
+  }
+
+  let companyEmailResult = null;
+  let customerEmailResult = null;
+
+  try {
+    // Email to YOUR company (notification)
+    companyEmailResult = await resend.emails.send({
+      from: 'Contact Form <noreply@codemetric.in>',
+      to: process.env.COMPANY_EMAIL,
+      reply_to: email,
+      subject: `New Inquiry: ${projectType} — ${fullName}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+          <h2 style="color: #1a1a1a; border-bottom: 2px solid #000; padding-bottom: 10px;">New Contact Form Submission</h2>
+          
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <tr>
+              <td style="padding: 10px; background: #fff; border: 1px solid #e0e0e0; font-weight: bold; width: 35%;">Full Name</td>
+              <td style="padding: 10px; background: #fff; border: 1px solid #e0e0e0;">${fullName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; background: #f5f5f5; border: 1px solid #e0e0e0; font-weight: bold;">Email</td>
+              <td style="padding: 10px; background: #f5f5f5; border: 1px solid #e0e0e0;">
+                <a href="mailto:${email}" style="color: #1a1a1a;">${email}</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; background: #fff; border: 1px solid #e0e0e0; font-weight: bold;">Project Type</td>
+              <td style="padding: 10px; background: #fff; border: 1px solid #e0e0e0;">${projectType}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; background: #f5f5f5; border: 1px solid #e0e0e0; font-weight: bold; vertical-align: top;">Project Details</td>
+              <td style="padding: 10px; background: #f5f5f5; border: 1px solid #e0e0e0; white-space: pre-wrap;">${projectDetails}</td>
+            </tr>
+          </table>
+          
+          <p style="color: #666; font-size: 12px; margin-top: 20px;">
+            Received: ${new Date().toLocaleString('en-US', { timeZone: 'UTC' })} UTC<br>
+            Reply directly to this email to respond to ${fullName}.
+          </p>
+        </div>
+      `
+    });
+
+    if (companyEmailResult.error) {
+      console.error('❌ Company notification email FAILED:', JSON.stringify(companyEmailResult.error, null, 2));
+    } else {
+      console.log('✅ Company notification email sent. Resend id:', companyEmailResult.data && companyEmailResult.data.id);
+    }
+  } catch (error) {
+    console.error('❌ Company notification email threw an exception:', error);
+  }
+
+  try {
+    // Auto-reply to the CUSTOMER
+    customerEmailResult = await resend.emails.send({
+      from: 'Code Metric <noreply@codemetric.in>',
+      to: email,
+      subject: `We received your message, ${fullName}!`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+          <h2 style="color: #1a1a1a;">Thanks for reaching out!</h2>
+          
+          <p style="color: #333; line-height: 1.6;">Hi ${fullName},</p>
+          
+          <p style="color: #333; line-height: 1.6;">
+            We've received your message about <strong>${projectType}</strong> and will get back to you within one business day.
+          </p>
+          
+          <div style="background: #fff; border-left: 4px solid #0A7EA4; padding: 15px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; color: #666; font-size: 14px;"><strong>Your message:</strong></p>
+            <p style="margin: 10px 0 0; color: #333; white-space: pre-wrap;">${projectDetails}</p>
+          </div>
+          
+          <p style="color: #333; line-height: 1.6;">
+            Best regards,<br>
+            <strong>Code Metric Team</strong>
+          </p>
+          
+          <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;">
+          <p style="color: #999; font-size: 11px;">
+            This is an automated confirmation. Please do not reply to this email directly.
+          </p>
+        </div>
+      `
+    });
+
+    if (customerEmailResult.error) {
+      console.error('❌ Customer confirmation email FAILED:', JSON.stringify(customerEmailResult.error, null, 2));
+    } else {
+      console.log('✅ Customer confirmation email sent. Resend id:', customerEmailResult.data && customerEmailResult.data.id);
+    }
+  } catch (error) {
+    console.error('❌ Customer confirmation email threw an exception:', error);
+  }
+
+  const companyOk = companyEmailResult && !companyEmailResult.error;
+  const customerOk = customerEmailResult && !customerEmailResult.error;
+
+  if (companyOk && customerOk) {
+    return res.status(200).json({
+      success: true,
+      message: 'Your message has been sent successfully!'
+    });
+  }
+
+  if (companyOk && !customerOk) {
+    // The enquiry reached you — that's the critical part — but flag the confirmation failure clearly in logs.
+    console.error('⚠️ Enquiry was received by the company, but the customer confirmation email did NOT send. Check the Resend dashboard logs / error above for the reason (commonly: sending domain or recipient restrictions on the Resend account).');
+    return res.status(200).json({
+      success: true,
+      message: 'Your message has been sent successfully!'
+    });
+  }
+
+  return res.status(500).json({
+    success: false,
+    message: 'Failed to send message. Please try again later.'
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
+});
