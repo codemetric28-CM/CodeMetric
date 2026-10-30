@@ -6,7 +6,10 @@
 <title>Code Metric — Engineering growth you can actually measure</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&family=Prosto+One&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="images/hero-bg.webp" fetchpriority="high">
+<link rel="preload" as="image" href="logo-icon.webp">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Poppins:wght@500;600&family=Prosto+One&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Poppins:wght@500;600&family=Prosto+One&display=swap"></noscript>
 <style>
   html{scroll-behavior:smooth; overflow-anchor:none;}
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -15,10 +18,11 @@
   ul{list-style:none;}
   img{display:block; max-width:none;}
   .scale-wrap{width:100%; overflow:hidden; position:relative; overflow-anchor:none;}
-  .canvas{position:relative; width:1440px; height:10230px; background:#000; overflow:hidden; transform-origin:top left; overflow-anchor:none;}
+  .canvas{position:relative; width:1440px; height:8550px; background:#000; overflow:hidden; transform-origin:top left; overflow-anchor:none; contain:layout style;}
   .abs{position:absolute;}
   .fvs96{font-variation-settings:"opsz" 96, "wdth" 100;}
   .fvs14{font-variation-settings:"opsz" 14, "wdth" 100;}
+  .glow-blob{pointer-events:none; transform:translateZ(0);}
 
   @keyframes heroImgScale{
     0%{transform:scale(0.94); animation-timing-function:ease-in-out;}
@@ -62,7 +66,6 @@
     width: 0;
     height: 0;
     transform-style: preserve-3d;
-    will-change: transform;
   }
   .cine-card {
     position: absolute;
@@ -76,7 +79,6 @@
     overflow: hidden;
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    will-change: transform, opacity;
     cursor: pointer;
     box-shadow: 0 20px 45px rgba(0,0,0,0.5);
     transition: box-shadow .4s ease;
@@ -89,7 +91,6 @@
     filter: grayscale(1) brightness(0.82);
     transform: translate3d(0,0,0) scale(1);
     transition: filter .4s ease, transform .5s ease;
-    will-change: filter, transform;
     pointer-events: none;
   }
   .cine-card .cine-label {
@@ -129,7 +130,6 @@
     position: absolute; left: 0; top: 0; width: 600.523px; height: 552.07px;
     transform: translate3d(0,0,0) rotate(0deg);
     transition: transform .7s cubic-bezier(0.22,1,0.36,1);
-    will-change: transform;
     backface-visibility: hidden;
   }
   .wcu-center {
@@ -137,7 +137,6 @@
     opacity: 0;
     transform: translate3d(0, 14px, 0);
     transition: opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1);
-    will-change: opacity, transform;
     pointer-events: none;
     z-index: 0;
   }
@@ -178,6 +177,442 @@
   .wcu-card[data-corner="br"] p:nth-of-type(1) { left: 325.08px !important; top: 322.93px !important; }
   .wcu-card[data-corner="br"] p:nth-of-type(2) { left: 325.08px !important; top: 404.93px !important; }
   .wcu-card[data-corner="br"] p:nth-of-type(3) { left: 325.08px !important; top: 444.53px !important; }
+
+  /* ===== Contact — outside scaled canvas (responsive doc flow) ===== */
+  .ct {
+    --bg: #031516;
+    --card: rgba(255,255,255,.04);
+    --line: rgba(255,255,255,.16);
+    --text: #f2fbfb;
+    --muted: rgba(242,251,251,.68);
+    --teal: #037e80;
+    --cyan: #05fbff;
+    --danger: #ff8a8a;
+    position: relative;
+    overflow: hidden;
+    padding: clamp(48px,6vw,80px) 24px clamp(64px,10vw,140px);
+    margin-bottom: 60px;
+    background:
+      radial-gradient(60% 50% at 85% 20%, rgba(5,251,255,.14), transparent 70%),
+      radial-gradient(50% 50% at 0% 100%, rgba(3,126,128,.35), transparent 70%),
+      var(--bg);
+    color: var(--text);
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  }
+  .ct *, .ct *::before, .ct *::after { box-sizing: border-box; }
+  .ct__wrap {
+    max-width: 1180px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(32px,6vw,96px); align-items: start;
+  }
+  @media (max-width: 900px) { .ct__wrap { grid-template-columns: 1fr; } }
+  .ct h2 {
+    font-size: clamp(40px,6vw,76px); line-height: 1.02;
+    letter-spacing: -.025em; font-weight: 600; margin: 0 0 24px;
+  }
+  .ct__lead {
+    font-size: clamp(18px,2vw,22px); line-height: 1.5;
+    color: var(--muted); max-width: 44ch; margin: 0 0 48px;
+  }
+  .ct__list {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 22px; max-width: 46ch;
+  }
+  .ct__list li {
+    padding-left: 20px; border-left: 2px solid var(--teal); display: grid; gap: 4px;
+  }
+  .ct__list strong { font-size: 18px; font-weight: 600; }
+  .ct__list span { color: var(--muted); line-height: 1.5; }
+  .ct__card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 24px; padding: clamp(24px,4vw,44px);
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,.6), 0 0 0 1px rgba(5,251,255,.04) inset;
+  }
+  .ct__card form { display: grid; gap: 26px; }
+  .ct__card .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 520px) { .ct__card .row { grid-template-columns: 1fr; } }
+  .ct__card .f { position: relative; }
+  .ct__card .f input,
+  .ct__card .f textarea {
+    width: 100%; font: inherit; font-size: 18px; color: var(--text);
+    background: transparent; border: 0;
+    border-bottom: 1.5px solid var(--line);
+    padding: 24px 0 10px; border-radius: 0; resize: none;
+    transition: border-color .2s;
+  }
+  .ct__card .f label {
+    position: absolute; left: 0; top: 22px; color: var(--muted);
+    pointer-events: none; font-size: 18px;
+    transition: transform .2s, color .2s; transform-origin: left top;
+  }
+  .ct__card .f input:focus + label,
+  .ct__card .f input:not(:placeholder-shown) + label,
+  .ct__card .f textarea:focus + label,
+  .ct__card .f textarea:not(:placeholder-shown) + label {
+    transform: translateY(-20px) scale(.78); color: var(--cyan);
+  }
+  .ct__card .f input:focus,
+  .ct__card .f textarea:focus { outline: none; border-color: var(--cyan); }
+  .ct__card .f.bad input,
+  .ct__card .f.bad textarea { border-color: var(--danger); }
+  .ct__card .err {
+    display: block; color: var(--danger); font-size: 14px;
+    min-height: 18px; margin-top: 6px;
+  }
+  .ct__card .chips {
+    border: 0; padding: 0; margin: 0;
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .ct__card .chips legend {
+    color: var(--muted); font-size: 15px; margin-bottom: 12px;
+    padding: 0; width: 100%;
+  }
+  .ct__card .chips label { cursor: pointer; }
+  .ct__card .chips input { position: absolute; opacity: 0; pointer-events: none; }
+  .ct__card .chips span {
+    display: inline-block; padding: 10px 18px; border-radius: 999px;
+    font-size: 16px; border: 1px solid var(--line); color: var(--text);
+    transition: background .2s, border-color .2s, color .2s;
+  }
+  .ct__card .chips label:hover span { border-color: rgba(5,251,255,.5); }
+  .ct__card .chips input:checked + span {
+    background: var(--cyan); border-color: var(--cyan); color: #012; font-weight: 600;
+  }
+  .ct__card .chips input:focus-visible + span {
+    outline: 3px solid var(--cyan); outline-offset: 2px;
+  }
+  .ct__card .btn {
+    font: inherit; font-size: 19px; font-weight: 600;
+    color: #fff; cursor: pointer;
+    background: linear-gradient(135deg, #049a9d, #037e80);
+    border: 0; border-radius: 14px; padding: 20px 32px;
+    transition: transform .15s, box-shadow .2s, opacity .2s;
+    box-shadow: 0 12px 30px -10px rgba(5,251,255,.45);
+  }
+  .ct__card .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px -10px rgba(5,251,255,.6);
+  }
+  .ct__card .btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  .ct__card .btn:disabled { opacity: .6; cursor: wait; transform: none; }
+  .ct__card .note {
+    margin: -8px 0 0; font-size: 14px; color: var(--muted); text-align: center;
+  }
+  .ct__card .status { margin: 0; min-height: 0; color: var(--danger); }
+  .ct__card .hp { position: absolute; left: -9999px; height: 0; width: 0; overflow: hidden; }
+  .ct__card .done[hidden] { display: none; }
+  .ct__card .done h3 { font-size: 32px; margin: 0 0 12px; }
+  .ct__card .done p { color: var(--muted); font-size: 18px; margin: 0; }
+  @media (prefers-reduced-motion: reduce) { .ct * { transition: none !important; } }
+
+  .footer-scale-wrap { width: 100%; overflow: hidden; position: relative; }
+  .footer-canvas {
+    position: relative; width: 1440px; height: 636px;
+    transform-origin: top left; background: #000;
+  }
+  .line-anim {
+  clip-path: inset(0 -30px);   /* keeps the glow at the sides, clips it at the line's ends */
+}
+
+.line-anim::after {                 /* the line drawing itself */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #42e8f5;
+  box-shadow: 0 0 8px 1px rgba(66, 232, 245, .7);
+  transform-origin: top;
+  transform: scaleY(0);
+  animation: lineDraw 3.5s cubic-bezier(.5, 0, .2, 1) infinite;
+}
+
+.line-anim::before {                /* glowing dot at the tip */
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px #42e8f5, 0 0 22px 6px rgba(23, 175, 189, .6);
+  opacity: 0;
+  animation: lineDot 3.5s cubic-bezier(.5, 0, .2, 1) infinite;
+}
+
+.line-anim.delay::before,
+.line-anim.delay::after { animation-delay: 1.75s; }
+
+@keyframes lineDraw {
+  0%   { transform: scaleY(0); opacity: 1; }
+  55%  { transform: scaleY(1); opacity: 1; }
+  80%  { transform: scaleY(1); opacity: 1; }
+  95%, 100% { transform: scaleY(1); opacity: 0; }
+}
+
+@keyframes lineDot {
+  0%   { transform: translateY(0);     opacity: 1; }
+  55%  { transform: translateY(170px); opacity: 1; }
+  62%, 100% { transform: translateY(170px); opacity: 0; }
+}
+.flow-line, .node-ring { --loop: 7s; }
+
+/* ---------- lines (your dim white line stays as the base) ---------- */
+.flow-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #42e8f5;
+  box-shadow: 0 0 8px 1px rgba(66, 232, 245, .7);
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: 0;
+  animation-duration: var(--loop);
+  animation-timing-function: cubic-bezier(.5, 0, .3, 1);
+  animation-iteration-count: infinite;
+}
+.flow-line::before {              /* glowing dot at the tip */
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px #42e8f5, 0 0 22px 6px rgba(23, 175, 189, .6);
+  opacity: 0;
+  animation-duration: var(--loop);
+  animation-timing-function: cubic-bezier(.5, 0, .3, 1);
+  animation-iteration-count: infinite;
+}
+.line-a::after  { animation-name: drawA; }
+.line-a::before { animation-name: dotA; }
+.line-b::after  { animation-name: drawB; }
+.line-b::before { animation-name: dotB; }
+
+@keyframes drawA {
+  0%, 7.9% { opacity: 0; transform: scaleY(0); }
+  8%       { opacity: 1; transform: scaleY(0); }
+  34%, 90% { opacity: 1; transform: scaleY(1); }
+  97%, 100% { opacity: 0; transform: scaleY(1); }
+}
+@keyframes drawB {
+  0%, 41.9% { opacity: 0; transform: scaleY(0); }
+  42%       { opacity: 1; transform: scaleY(0); }
+  68%, 90%  { opacity: 1; transform: scaleY(1); }
+  97%, 100% { opacity: 0; transform: scaleY(1); }
+}
+@keyframes dotA {
+  0%, 7.9% { opacity: 0; transform: translateY(0); }
+  8%       { opacity: 1; transform: translateY(0); }
+  34%      { opacity: 1; transform: translateY(170px); }
+  37%, 100% { opacity: 0; transform: translateY(170px); }
+}
+@keyframes dotB {
+  0%, 41.9% { opacity: 0; transform: translateY(0); }
+  42%       { opacity: 1; transform: translateY(0); }
+  68%      { opacity: 1; transform: translateY(170px); }
+  71%, 100% { opacity: 0; transform: translateY(170px); }
+}
+
+/* ---------- circle nodes ---------- */
+.node-ring {
+  pointer-events: none;
+  width: 100px;
+  height: 100px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 2px solid #42e8f5;
+  opacity: 0;
+  scale: .6;
+  animation-duration: var(--loop);
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+.node-ring::after {               /* expanding ripple */
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid #42e8f5;
+  opacity: 0;
+  animation-duration: var(--loop);
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+.ring-a { animation-name: ringA; } .ring-a::after { animation-name: rippleA; }
+.ring-b { animation-name: ringB; } .ring-b::after { animation-name: rippleB; }
+.ring-c { animation-name: ringC; } .ring-c::after { animation-name: rippleC; }
+
+@keyframes ringA {
+  0%        { opacity: 0; scale: .6; box-shadow: 0 0 0 0 rgba(66,232,245,0); }
+  6%        { opacity: 1; scale: 1;  box-shadow: 0 0 22px 4px rgba(66,232,245,.9); }
+  16%, 90%  { opacity: .85; scale: 1; box-shadow: 0 0 10px 1px rgba(66,232,245,.5); }
+  97%, 100% { opacity: 0; scale: 1;  box-shadow: 0 0 0 0 rgba(66,232,245,0); }
+}
+@keyframes ringB {
+  0%, 34%   { opacity: 0; scale: .6; box-shadow: 0 0 0 0 rgba(66,232,245,0); }
+  40%       { opacity: 1; scale: 1;  box-shadow: 0 0 22px 4px rgba(66,232,245,.9); }
+  50%, 90%  { opacity: .85; scale: 1; box-shadow: 0 0 10px 1px rgba(66,232,245,.5); }
+  97%, 100% { opacity: 0; scale: 1;  box-shadow: 0 0 0 0 rgba(66,232,245,0); }
+}
+@keyframes ringC {
+  0%, 68%   { opacity: 0; scale: .6; box-shadow: 0 0 0 0 rgba(66,232,245,0); }
+  74%       { opacity: 1; scale: 1;  box-shadow: 0 0 22px 4px rgba(66,232,245,.9); }
+  84%, 90%  { opacity: .85; scale: 1; box-shadow: 0 0 10px 1px rgba(66,232,245,.5); }
+  97%, 100% { opacity: 0; scale: 1;  box-shadow: 0 0 0 0 rgba(66,232,245,0); }
+}
+@keyframes rippleA {
+  0%        { opacity: .8; scale: 1; }
+  16%, 100% { opacity: 0;  scale: 1.7; }
+}
+@keyframes rippleB {
+  0%, 33.9% { opacity: 0;  scale: 1; }
+  34%       { opacity: .8; scale: 1; }
+  50%, 100% { opacity: 0;  scale: 1.7; }
+}
+@keyframes rippleC {
+  0%, 67.9% { opacity: 0;  scale: 1; }
+  68%       { opacity: .8; scale: 1; }
+  84%, 100% { opacity: 0;  scale: 1.7; }
+}
+.flow-line, .node-ring { --loop: 10s; }
+
+/* ---------- lines (your dim white line stays as the base) ---------- */
+.flow-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #42e8f5;
+  box-shadow: 0 0 8px 1px rgba(66, 232, 245, .7);
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: 0;
+  animation-duration: var(--loop);
+  animation-timing-function: cubic-bezier(.5, 0, .3, 1);
+  animation-iteration-count: infinite;
+}
+.flow-line::before {                      /* glowing dot at the tip */
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px #42e8f5, 0 0 22px 6px rgba(23, 175, 189, .6);
+  opacity: 0;
+  animation-duration: var(--loop);
+  animation-timing-function: cubic-bezier(.5, 0, .3, 1);
+  animation-iteration-count: infinite;
+}
+.line-a::after  { animation-name: drawA; }
+.line-a::before { animation-name: dotA; }
+.line-b::after  { animation-name: drawB; }
+.line-b::before { animation-name: dotB; }
+
+@keyframes drawA {
+  0%, 16.9% { opacity: 0; transform: scaleY(0); }
+  17%       { opacity: 1; transform: scaleY(0); }
+  38%, 93%  { opacity: 1; transform: scaleY(1); }
+  98%, 100% { opacity: 0; transform: scaleY(1); }
+}
+@keyframes dotA {
+  0%, 16.9% { opacity: 0; transform: translateY(0); }
+  17%       { opacity: 1; transform: translateY(0); }
+  38%       { opacity: 1; transform: translateY(170px); }
+  41%, 100% { opacity: 0; transform: translateY(170px); }
+}
+@keyframes drawB {
+  0%, 52.9% { opacity: 0; transform: scaleY(0); }
+  53%       { opacity: 1; transform: scaleY(0); }
+  73%, 93%  { opacity: 1; transform: scaleY(1); }
+  98%, 100% { opacity: 0; transform: scaleY(1); }
+}
+@keyframes dotB {
+  0%, 52.9% { opacity: 0; transform: translateY(0); }
+  53%       { opacity: 1; transform: translateY(0); }
+  73%       { opacity: 1; transform: translateY(170px); }
+  76%, 100% { opacity: 0; transform: translateY(170px); }
+}
+
+/* ---------- circles ---------- */
+.node-ring {
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+}
+.node-ring svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation-duration: var(--loop);
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+.node-ring circle {
+  fill: #42e8f5;
+  fill-opacity: 0;
+  stroke: #42e8f5;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation-duration: var(--loop);
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(.45, 0, .25, 1);
+}
+.ring-a circle { animation-name: cA; } .ring-a svg { animation-name: gA; }
+.ring-b circle { animation-name: cB; } .ring-b svg { animation-name: gB; }
+.ring-c circle { animation-name: cC; } .ring-c svg { animation-name: gC; }
+
+/* circle draws, then fills */
+@keyframes cA {
+  0%, 1.9%  { opacity: 0; stroke-dashoffset: 1; fill-opacity: 0; }
+  2%        { opacity: 1; stroke-dashoffset: 1; fill-opacity: 0; }
+  12%       { opacity: 1; stroke-dashoffset: 0; fill-opacity: 0; }
+  17%, 93%  { opacity: 1; stroke-dashoffset: 0; fill-opacity: .16; }
+  98%, 100% { opacity: 0; stroke-dashoffset: 0; fill-opacity: 0; }
+}
+@keyframes cB {
+  0%, 37.9% { opacity: 0; stroke-dashoffset: 1; fill-opacity: 0; }
+  38%       { opacity: 1; stroke-dashoffset: 1; fill-opacity: 0; }
+  48%       { opacity: 1; stroke-dashoffset: 0; fill-opacity: 0; }
+  53%, 93%  { opacity: 1; stroke-dashoffset: 0; fill-opacity: .16; }
+  98%, 100% { opacity: 0; stroke-dashoffset: 0; fill-opacity: 0; }
+}
+@keyframes cC {
+  0%, 72.9% { opacity: 0; stroke-dashoffset: 1; fill-opacity: 0; }
+  73%       { opacity: 1; stroke-dashoffset: 1; fill-opacity: 0; }
+  83%       { opacity: 1; stroke-dashoffset: 0; fill-opacity: 0; }
+  88%, 93%  { opacity: 1; stroke-dashoffset: 0; fill-opacity: .16; }
+  98%, 100% { opacity: 0; stroke-dashoffset: 0; fill-opacity: 0; }
+}
+
+/* glow burst the moment each circle completes */
+@keyframes gA {
+  0%, 11.9% { filter: drop-shadow(0 0 0 rgba(66,232,245,0)); }
+  14%       { filter: drop-shadow(0 0 12px #42e8f5) drop-shadow(0 0 28px rgba(66,232,245,.8)); }
+  20%, 93%  { filter: drop-shadow(0 0 6px rgba(66,232,245,.6)); }
+  98%, 100% { filter: drop-shadow(0 0 0 rgba(66,232,245,0)); }
+}
+@keyframes gB {
+  0%, 47.9% { filter: drop-shadow(0 0 0 rgba(66,232,245,0)); }
+  50%       { filter: drop-shadow(0 0 12px #42e8f5) drop-shadow(0 0 28px rgba(66,232,245,.8)); }
+  56%, 93%  { filter: drop-shadow(0 0 6px rgba(66,232,245,.6)); }
+  98%, 100% { filter: drop-shadow(0 0 0 rgba(66,232,245,0)); }
+}
+@keyframes gC {
+  0%, 82.9% { filter: drop-shadow(0 0 0 rgba(66,232,245,0)); }
+  85%       { filter: drop-shadow(0 0 12px #42e8f5) drop-shadow(0 0 28px rgba(66,232,245,.8)); }
+  91%, 93%  { filter: drop-shadow(0 0 6px rgba(66,232,245,.6)); }
+  98%, 100% { filter: drop-shadow(0 0 0 rgba(66,232,245,0)); }
+}
 </style>
 </head>
 <body>
@@ -185,10 +620,10 @@
 <div class="canvas" id="canvas" data-node-id="6:11">
 
   <!-- 7:104 Header -->
-  <div class="abs" style="left:0; top:0; width:1440px; height:111px; backdrop-filter:blur(20px); background:rgba(0,0,0,0.6);" data-node-id="7:104">
+  <div class="abs" style="left:0; top:0; width:1440px; height:111px; background:rgba(0,0,0,0.72);" data-node-id="7:104">
     <p class="abs fvs14" style="left:103px; top:38px; width:147px; height:42.083px; font-family:'Poppins',sans-serif; font-weight:600; color:#fff4f4; font-size:24px;">code metric</p>
     <div class="abs" style="left:36px; top:19px; width:58px; height:73px;">
-      <img src="logo-icon.png" style="width:100%; height:100%; object-fit:contain;" alt="Code Metric logo">
+      <img src="logo-icon.webp" width="58" height="73" decoding="async" fetchpriority="high" style="width:100%; height:100%; object-fit:contain;" alt="Code Metric logo">
     </div>
     <nav class="top-nav">
       <a class="abs" style="left:366px; top:41px; width:71px;" href="#about" onclick="return goToSection(event,'about');">About</a>
@@ -204,7 +639,7 @@
 
   <!-- 7:51 Hero image with scale-in animation -->
   <div class="abs hero-img" style="left:-15px; top:111px; width:1470px; height:914px; overflow:hidden;">
-    <img src="images/hero-bg.jpg" style="width:100%; height:100%; object-fit:cover;" alt="">
+    <img src="images/hero-bg.webp" width="1470" height="914" decoding="async" fetchpriority="high" style="width:100%; height:100%; object-fit:cover;" alt="">
   </div>
 
   <!-- 6:22 Hero heading -->
@@ -221,11 +656,11 @@
   <div class="abs" style="left:1027.96px; top:166.51px; width:342.079px; height:320.978px; transform:rotate(-2.3deg); transform-origin:center center;">
     <div class="abs" style="left:0; top:0; width:330px; height:308px; margin:6.5px; background:rgba(217,217,217,0.2); border-radius:30px;"></div>
     <div class="abs" style="left:12.4px; top:10.5px; width:305px; height:214px; border-radius:30px; overflow:hidden;">
-      <img src="images/video-thumb.jpg" style="width:100%; height:100%; object-fit:cover;" alt="">
+      <img src="images/video-thumb.webp" width="305" height="214" decoding="async" loading="eager" style="width:100%; height:100%; object-fit:cover;" alt="">
     </div>
     <div class="abs" style="left:125.75px; top:75.91px; width:83px; height:83px; background:rgba(217,217,217,0.2); border-radius:300px;"></div>
     <div class="abs" style="left:146.53px; top:96.66px; width:44px; height:44px;">
-      <img src="images/play-icon.svg" style="width:100%; height:100%;" alt="">
+      <img src="images/play-icon.svg" width="44" height="44" decoding="async" style="width:100%; height:100%;" alt="">
     </div>
     <div class="abs" style="left:12.4px; top:224.5px; width:305px; height:90px; box-sizing:border-box; padding:18px 24px; display:flex; align-items:center;">
       <p style="margin:0; font-family:'Poppins',sans-serif; font-weight:600; font-size:19px; line-height:1.4; color:rgba(0,0,0,0.8); text-align:left;">Code Metric designs, builds and ships</p>
@@ -234,10 +669,10 @@
 
   <!-- Component7: Talk to us button -->
   <div class="abs talk-btn" onclick="goToSection(event,'contact');" style="left:94px; top:766px; width:257px; height:67px;">
-    <div class="abs" style="left:0; top:0; width:257px; height:67px; border-radius:33.5px; background:rgba(30,30,30,0.55); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.25); box-shadow:0 8px 24px rgba(0,0,0,0.4);"></div>
+    <div class="abs" style="left:0; top:0; width:257px; height:67px; border-radius:33.5px; background:rgba(30,30,30,0.75); border:1px solid rgba(255,255,255,0.25); box-shadow:0 8px 24px rgba(0,0,0,0.4);"></div>
     <div class="abs" style="left:194px; top:6px; width:55px; height:55px; background:rgba(217,217,217,0.2); border-radius:300px;"></div>
     <div class="abs" style="left:204px; top:16px; width:36px; height:36px;">
-      <img src="images/arrow-icon.svg" style="width:100%; height:100%; transform:rotate(90deg);" alt="">
+      <img src="images/arrow-icon.svg" width="36" height="36" decoding="async" style="width:100%; height:100%; transform:rotate(90deg);" alt="">
     </div>
     <p class="abs" style="left:18px; top:2px; font-family:'Poppins',sans-serif; font-weight:500; font-size:30px; line-height:64px; color:#fff; white-space:nowrap;">Talk to us</p>
   </div>
@@ -245,14 +680,14 @@
   <!-- 28:149 Glow section with About us label -->
   <div class="abs" id="about" style="left:0; top:1325px; width:1438px; height:1357px;">
     <div class="abs" style="left:0; top:0; width:1438px; height:1357px; background:#000;"></div>
-    <div class="abs" style="left:195px; top:155px; width:1047px; height:1047px; background:#0286a7; filter:blur(50px); border-radius:660px;"></div>
-    <div class="abs" style="left:226px; top:218px; width:985px; height:984px; background:#00d3d6; filter:blur(50px); border-radius:660px;"></div>
+    <div class="abs glow-blob" style="left:195px; top:155px; width:1047px; height:1047px; background:radial-gradient(circle, #0286a7 0%, transparent 70%); border-radius:660px; opacity:0.9;"></div>
+    <div class="abs glow-blob" style="left:226px; top:218px; width:985px; height:984px; background:radial-gradient(circle, #00d3d6 0%, transparent 70%); border-radius:660px; opacity:0.85;"></div>
     <p class="abs fvs14" style="left:50%; top:315px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:32px; color:#000; white-space:nowrap;">About us</p>
   </div>
 
   <!-- 28:147 laptop mockup image -->
   <div class="abs" id="solutions" style="left:calc(50% - 1px); top:1558px; width:1166px; height:875px; transform:translateX(-50%);">
-    <img src="images/laptop-mockup.png" style="width:100%; height:100%; object-fit:cover;" alt="A development team that thinks like an analyst">
+    <img src="images/laptop-mockup.webp" width="1166" height="875" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" alt="A development team that thinks like an analyst">
   </div>
 
   <!-- 14:2 Stats row -->
@@ -271,13 +706,13 @@
     <div class="abs" style="left:924.6px; top:1125px; width:1px; height:200.21px; background:rgba(255,255,255,0.4);"></div>
   </div>
 
-  <!-- 45:14 decorative blur blobs (why-choose-us area) -->
-  <div class="abs" style="left:8px; top:4180px; width:549px; height:412px; filter:blur(150px); background-image:linear-gradient(208.8deg, rgb(0,0,0) 21.141%, rgb(115,115,115) 100%);"></div>
-  <div class="abs" style="left:964px; top:3924px; width:549px; height:412px; filter:blur(150px); background-image:linear-gradient(208.8deg, rgb(0,0,0) 21.141%, rgb(115,115,115) 100%);"></div>
+  <!-- 45:14 decorative glow blobs (why-choose-us area) -->
+  <div class="abs glow-blob" style="left:8px; top:4180px; width:549px; height:412px; background:radial-gradient(ellipse at center, rgba(115,115,115,0.55) 0%, transparent 70%);"></div>
+  <div class="abs glow-blob" style="left:964px; top:3924px; width:549px; height:412px; background:radial-gradient(ellipse at center, rgba(115,115,115,0.55) 0%, transparent 70%);"></div>
 
   <!-- 45:3 industries image -->
   <div class="abs" style="left:8px; top:3851px; width:1432px; height:1074px;">
-    <img src="images/industries.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Industries we serve">
+    <img src="images/industries.webp" width="1432" height="1074" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" alt="Industries we serve">
   </div>
   <p class="abs fvs14" style="left:calc(50% + 0.5px); top:3820px; transform:translateX(-50%); width:869px; font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:70px; color:#fff; text-align:center;">Built for every industry we work in</p>
 
@@ -290,17 +725,31 @@
   <p class="abs fvs14" style="left:calc(50% - 337px); top:6848px; transform:translateX(-50%); width:190px; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#00d3d6; text-align:center;">Data & Analytics</p>
   <p class="abs fvs14" style="left:calc(50% + 362px); top:6563px; transform:translateX(-50%); width:124px; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#00d3d6; text-align:center;">Engineering</p>
 
-  <div class="abs" style="left:740px; top:6425px; width:1px; height:170px; background:rgba(255,255,255,0.4);"></div>
-  <div class="abs" style="left:741px; top:6725px; width:1px; height:170px; background:rgba(255,255,255,0.4);"></div>
+  <!-- <div class="abs" style="left:740px; top:6425px; width:1px; height:170px; background:rgba(255,255,255,0.4);"></div>
+  <div class="abs" style="left:741px; top:6725px; width:1px; height:170px; background:rgba(255,255,255,0.4);"></div> -->
 
+  <div class="abs line-anim" style="left:740px; top:6425px; width:1px; height:170px; background:rgba(255,255,255,0.4);"></div>
+<div class="abs line-anim delay" style="left:741px; top:6725px; width:1px; height:170px; background:rgba(255,255,255,0.4);"></div>
+<!-- <div class="abs node-ring ring-a" style="left:calc(50% + 21px); top:6305px; transform:translateX(-50%);"></div>
+<div class="abs node-ring ring-b" style="left:calc(50% + 20px); top:6605px; transform:translateX(-50%);"></div>
+<div class="abs node-ring ring-c" style="left:calc(50% + 21px); top:6905px; transform:translateX(-50%);"></div> -->
+<div class="abs node-ring ring-a" style="left:calc(50% + 21px); top:6305px; transform:translateX(-50%);">
+  <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" pathLength="1" transform="rotate(-90 50 50)"/></svg>
+</div>
+<div class="abs node-ring ring-b" style="left:calc(50% + 20px); top:6605px; transform:translateX(-50%);">
+  <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" pathLength="1" transform="rotate(-90 50 50)"/></svg>
+</div>
+<div class="abs node-ring ring-c" style="left:calc(50% + 21px); top:6905px; transform:translateX(-50%);">
+  <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" pathLength="1" transform="rotate(-90 50 50)"/></svg>
+</div>
   <div class="abs" style="left:calc(50% + 21px); top:6305px; transform:translateX(-50%); width:100px; height:100px;">
-    <img src="images/blog-icon-strategy.svg" style="width:100%; height:100%;" alt="">
+    <img src="images/blog-icon-strategy.svg" width="100" height="100" loading="lazy" decoding="async" style="width:100%; height:100%;" alt="">
   </div>
   <div class="abs" style="left:calc(50% + 20px); top:6605px; transform:translateX(-50%); width:100px; height:100px;">
-    <img src="images/blog-icon-data.svg" style="width:100%; height:100%;" alt="">
+    <img src="images/blog-icon-data.svg" width="100" height="100" loading="lazy" decoding="async" style="width:100%; height:100%;" alt="">
   </div>
   <div class="abs" style="left:calc(50% + 21px); top:6905px; transform:translateX(-50%); width:100px; height:100px;">
-    <img src="images/blog-icon-data.svg" style="width:100%; height:100%;" alt="">
+    <img src="images/blog-icon-data.svg" width="100" height="100" loading="lazy" decoding="async" style="width:100%; height:100%;" alt="">
   </div>
 
   <p class="abs fvs14" style="left:382.5px; top:6334px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:32px; color:#fff; text-align:center; white-space:nowrap;">Why "It Ships" Isn't The Finish Line</p>
@@ -312,25 +761,34 @@
   <p class="abs fvs14" style="left:1084.5px; top:6681px; transform:translateX(-50%); width:465px; font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:rgba(255,255,255,0.6); text-align:center;">Slower releases today are cheaper than the outages, rewrites and security gaps that show up later. A look at the math.</p>
 
   <div class="abs" style="left:716px; top:6624px; width:62px; height:62px;">
-    <img src="images/blog-icon-engineering.svg" style="width:100%; height:100%;" alt="">
+    <img src="images/blog-icon-engineering.svg" width="62" height="62" loading="lazy" decoding="async" style="width:100%; height:100%;" alt="">
   </div>
   <div class="abs" style="left:710px; top:6927px; width:62px; height:62px;">
-    <img src="images/blog-icon-support.svg" style="width:100%; height:100%;" alt="">
-  </div>
-  <div class="abs" style="left:710px; top:6324px; width:62px; height:62px;">
-    <img src="images/blog-icon-product.svg" style="width:100%; height:100%;" alt="">
+    <img src="images/blog-icon-support.svg" width="62" height="62" loading="lazy" decoding="async" style="width:100%; height:100%;" alt="">
   </div>
 
+<!-- Database Icon -->
+
+
+<!-- Database Icon Close-->
+
+  <div class="abs" style="left:720px; top:6334px; width:38px; height:38px;">
+    <img src="images/blog-icon-product.svg" width="62" height="62" loading="lazy" decoding="async" style="width:100%; height:100%;" alt="">
+  </div>
+
+ 
+  <!-- Product Icon Close -->
+
   <!-- 53:87/53:88 why-section glow blobs -->
-  <div class="abs" style="left:898px; top:5190px; width:572px; height:572px; background:#0286a7; filter:blur(300px); border-radius:360px;"></div>
-  <div class="abs" style="left:-174px; top:5029px; width:572px; height:572px; background:#0286a7; filter:blur(300px); border-radius:360px;"></div>
+  <div class="abs glow-blob" style="left:898px; top:5190px; width:572px; height:572px; background:radial-gradient(circle, rgba(2,134,167,0.75) 0%, transparent 70%); border-radius:360px;"></div>
+  <div class="abs glow-blob" style="left:-174px; top:5029px; width:572px; height:572px; background:radial-gradient(circle, rgba(2,134,167,0.75) 0%, transparent 70%); border-radius:360px;"></div>
 
   <!-- 92:91/92:92 decorative vector lines -->
   <div class="abs" style="left:-111px; top:5176px; width:340px; height:428px;">
-    <img src="images/deco-lines.svg" style="width:100%; height:100%;" alt="">
+    <img src="images/deco-lines.svg" width="340" height="428" loading="lazy" decoding="async" style="width:100%; height:100%;" alt="">
   </div>
   <div class="abs" style="left:1189px; top:5176px; width:340px; height:428px;">
-    <img src="images/deco-lines.svg" style="width:100%; height:100%;" alt="">
+    <img src="images/deco-lines.svg" width="340" height="428" loading="lazy" decoding="async" style="width:100%; height:100%;" alt="">
   </div>
 
   <!-- 66:368 why-choose-us heading -->
@@ -377,51 +835,51 @@
     <div class="service-track-wrap abs" style="left:0; top:171px; width:1440px; height:622px;">
       <div class="service-track" id="cineStage">
         <div class="cine-card" data-service="Web development">
-          <img src="images/service-web.jpg" alt="Web development">
+          <img src="images/service-web.webp" width="300" height="400" loading="lazy" decoding="async" alt="Web development">
           <div class="cine-label">Web development</div>
         </div>
         <div class="cine-card" data-service="UI/UX Design">
-          <img src="images/service-uiux.jpg" alt="UI/UX Design">
+          <img src="images/service-uiux.webp" width="300" height="400" loading="lazy" decoding="async" alt="UI/UX Design">
           <div class="cine-label">UI/UX Design</div>
         </div>
         <div class="cine-card" data-service="Cyber Security">
-          <img src="images/service-cyber.jpg" alt="Cyber Security">
+          <img src="images/service-cybe.webp" width="300" height="400" loading="lazy" decoding="async" alt="Cyber Security">
           <div class="cine-label">Cyber Security</div>
         </div>
         <div class="cine-card" data-service="Mobile app development">
-          <img src="images/service-mobile.jpg" alt="Mobile app development">
+          <img src="images/service-m.webp" width="300" height="400" loading="lazy" decoding="async" alt="Mobile app development">
           <div class="cine-label">Mobile app development</div>
         </div>
         <div class="cine-card" data-service="Cloud & Devops">
-          <img src="images/service-cloud.jpg" alt="Cloud & Devops">
+          <img src="images/service-cd.webp" width="300" height="400" loading="lazy" decoding="async" alt="Cloud & Devops">
           <div class="cine-label">Cloud & Devops</div>
         </div>
         <div class="cine-card" data-service="Data & Analytics">
-          <img src="images/service-data.jpg" alt="Data & Analytics">
+          <img src="images/service-data.webp" width="300" height="400" loading="lazy" decoding="async" alt="Data & Analytics">
           <div class="cine-label">Data & Analytics</div>
         </div>
         <div class="cine-card" data-service="Web development">
-          <img src="images/service-web.jpg" alt="Web development">
+          <img src="images/service-web-2.webp" width="300" height="400" loading="lazy" decoding="async" alt="Web development">
           <div class="cine-label">Web development</div>
         </div>
         <div class="cine-card" data-service="UI/UX Design">
-          <img src="images/service-uiux.jpg" alt="UI/UX Design">
+          <img src="images/service-uiux.webp" width="300" height="400" loading="lazy" decoding="async" alt="UI/UX Design">
           <div class="cine-label">UI/UX Design</div>
         </div>
         <div class="cine-card" data-service="Cyber Security">
-          <img src="images/service-cyber.jpg" alt="Cyber Security">
+          <img src="images/service-cybe.webp" width="300" height="400" loading="lazy" decoding="async" alt="Cyber Security">
           <div class="cine-label">Cyber Security</div>
         </div>
         <div class="cine-card" data-service="Mobile app development">
-          <img src="images/service-mobile.jpg" alt="Mobile app development">
+          <img src="images/service-m.webp" width="300" height="400" loading="lazy" decoding="async" alt="Mobile app development">
           <div class="cine-label">Mobile app development</div>
         </div>
         <div class="cine-card" data-service="Cloud & Devops">
-          <img src="images/service-cloud.jpg" alt="Cloud & Devops">
+          <img src="images/service-cd.webp" width="300" height="400" loading="lazy" decoding="async" alt="Cloud & Devops">
           <div class="cine-label">Cloud & Devops</div>
         </div>
         <div class="cine-card" data-service="Data & Analytics">
-          <img src="images/service-data.jpg" alt="Data & Analytics">
+          <img src="images/service-data.webp" width="300" height="400" loading="lazy" decoding="async" alt="Data & Analytics">
           <div class="cine-label">Data & Analytics</div>
         </div>
       </div>
@@ -429,157 +887,160 @@
   </div>
 
   <!-- Team section -->
+
   <p class="abs fvs14" style="left:129px; top:7309px; width:519px; font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:70px; color:#fff; text-align:center;">Meet the <span style="color:#00d3d6;">Team</span></p>
   <p class="abs fvs14" style="left:143.5px; top:7413px; width:553px; font-family:'Bricolage Grotesque',sans-serif; font-weight:500; font-size:32px; color:#ebebeb; text-align:justify;">Meet the Leadership Team<br>The people shaping our culture, inspiring our teams, and leading every project with confidence.</p>
 
   <!-- Prathamesh - Director card -->
   <div class="abs" style="left:933px; top:7309px; width:394px; height:552px; background:rgba(217,217,217,0.2); border-radius:30px;">
     <div class="abs" style="left:29px; top:29px; width:309px; height:269px; border-radius:30px; overflow:hidden;">
-      <img src="images/team-prathamesh.jpg" style="width:100%; height:130%; object-fit:cover;" alt="Prathamesh">
+      <img src="images/team-prathamesh.webp" width="309" height="269" loading="lazy" decoding="async" style="width:100%; height:130%; object-fit:cover;" alt="Prathamesh">
     </div>
     <p class="abs fvs14" style="left:97.5px; top:320px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Prathamesh</p>
     <p class="abs fvs14" style="left:72.5px; top:391px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Director</p>
     <p class="abs fvs14" style="left:23px; top:429px; width:349px; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff; text-align:justify;">Started with a vision to build meaningful digital solutions.<br>Today, leading a team committed to innovation, quality, client success.</p>
   </div>
 
-  <!-- Abhijeet - General manager card -->
-  <div class="abs" style="left:121px; top:7918px; width:371px; height:552px; background:rgba(217,217,217,0.2); border-radius:30px;">
-    <div class="abs" style="left:29px; top:29px; width:309px; height:269px; border-radius:30px; overflow:hidden;">
-      <img src="images/team-abhijeet.jpg" style="width:100%; height:160%; object-fit:cover;" alt="Abhijeet">
-    </div>
-    <p class="abs fvs14" style="left:79px; top:320px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Abhijeet</p>
-    <p class="abs fvs14" style="left:120.5px; top:391px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">General manager</p>
-    <p class="abs fvs14" style="left:22px; top:433px; width:327px; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff; text-align:justify;">Leads business operations with a focus on performance and growth.<br>Drives collaboration to achieve organizational objectives.</p>
-  </div>
 
-  <!-- Shrushti - HR Head card -->
-  <div class="abs" style="left:533px; top:7918px; width:371px; height:552px; background:rgba(217,217,217,0.2); border-radius:30px;">
-    <div class="abs" style="left:29px; top:29px; width:309px; height:269px; border-radius:30px; overflow:hidden;">
-      <img src="images/team-shrushti.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Shrushti">
-    </div>
-    <p class="abs fvs14" style="left:77px; top:320px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Shrushti</p>
-    <p class="abs fvs14" style="left:74.5px; top:391px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">HR Head</p>
-    <p class="abs fvs14" style="left:24px; top:433px; width:323px; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff; text-align:justify;">Manages recruitment, people operations, and workplace culture.<br>Ensures a positive and productive employee experience.</p>
-  </div>
 
-  <!-- Sanika - Designer Head card -->
+
+    <!-- - HR Head card -->
+    <div class="abs" style="left:121px; top:7918px; width:371px; height:552px; background:rgba(217,217,217,0.2); border-radius:30px;">
+      <div class="abs" style="left:29px; top:29px; width:309px; height:269px; border-radius:30px; overflow:hidden;">
+        <img src="images/HR.webp" width="309" height="269" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" alt="Bhagyashree">
+      </div>
+      <p class="abs fvs14" style="left:100px; top:320px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Bhagyashree</p>
+      <p class="abs fvs14" style="left:74.5px; top:391px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">HR Head</p>
+      <p class="abs fvs14" style="left:24px; top:433px; width:323px; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff; text-align:justify;">Manages recruitment, people operations, and workplace culture.<br>Ensures a positive and productive employee experience.</p>
+    </div>
+     
+
+  <!-- Social Media manager card --> 
   <div class="abs" style="left:945px; top:7918px; width:371px; height:552px; background:rgba(217,217,217,0.2); border-radius:30px;">
     <div class="abs" style="left:29px; top:29px; width:309px; height:269px; border-radius:30px; overflow:hidden;">
-      <img src="images/team-sanika.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Sanika">
+      <img src="images/team-shrushti.webp" width="309" height="269" loading="lazy" decoding="async" style="width:100%; height:160%; object-fit:cover;" alt="Shrushti">
     </div>
-    <p class="abs fvs14" style="left:67.5px; top:320px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Sanika</p>
+    <p class="abs fvs14" style="left:79px; top:320px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Shrushti</p>
+    <p class="abs fvs14" style="left:150.5px; top:391px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Social Media Manager</p>
+    <p class="abs fvs14" style="left:22px; top:433px; width:327px; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff; text-align:justify;">
+      <!-- Leads business operations with a focus on performance and growth.<br>Drives collaboration to achieve organizational objectives.</p> -->
+  </div>  
+
+
+
+  <!-- Sanika - Designer Head card -->
+  <div class="abs" style="left:533px; top:7918px; width:371px; height:552px; background:rgba(217,217,217,0.2); border-radius:30px;">
+    <div class="abs" style="left:29px; top:29px; width:309px; height:269px; border-radius:30px; overflow:hidden;">
+      <img src="" style="width:100%; height:100%; object-fit:cover;" alt="">
+    </div>
+    <p class="abs fvs14" style="left:67.5px; top:320px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Name</p>
     <p class="abs fvs14" style="left:113.5px; top:384px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:24px; color:#fff; text-align:center; white-space:nowrap;">Designer Head</p>
     <p class="abs fvs14" style="left:29px; top:428px; width:309px; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff; text-align:justify;">Designing experiences that are simple, functional, and impactful.<br>Turning creativity into meaningful user journeys.</p>
   </div>
 
-  <!-- Contact form -->
-  <p class="abs fvs14" id="contact" style="left:calc(50% - 659px); top:8670px; font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:70px; color:#fff; width:774px;">Let's build something measurable</p>
-  <p class="abs fvs14" style="left:calc(50% + 3px); top:8932px; width:656px; font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:32px; color:rgba(255,255,255,0.8);">Tell us what you're building — we'll reply within one business day with next steps.</p>
 
-  <form id="contactForm" onsubmit="return handleContactSubmit(event);">
-    <div class="abs" style="left:61px; top:8894px; width:270px;">
-      <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:rgba(255,255,255,0.8); margin-bottom:14px;">First Name</p>
-      <input type="text" id="firstName" name="firstName" placeholder="Your first name" required style="width:100%; height:60px; background:rgba(5,251,255,0.5); border:2px solid rgba(116,116,116,0.6); border-radius:10px; padding:0 20px; color:#fff; font-family:'Bricolage Grotesque',sans-serif; font-size:20px;">
-    </div>
-    <div class="abs" style="left:361px; top:8894px; width:284px;">
-      <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:rgba(255,255,255,0.8); margin-bottom:14px;">Last Name</p>
-      <input type="text" id="lastName" name="lastName" placeholder="Your last name" required style="width:100%; height:60px; background:rgba(5,251,255,0.5); border:2px solid rgba(116,116,116,0.6); border-radius:10px; padding:0 20px; color:#fff; font-family:'Bricolage Grotesque',sans-serif; font-size:20px;">
-    </div>
-    <div class="abs" style="left:61px; top:9016px; width:594px;">
-      <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:rgba(255,255,255,0.8); margin-bottom:13px;">Work Email</p>
-      <input type="email" id="workEmail" name="workEmail" placeholder="Your Work Email" required style="width:100%; height:60px; background:rgba(5,251,255,0.5); border:2px solid rgba(116,116,116,0.6); border-radius:10px; padding:0 20px; color:#fff; font-family:'Bricolage Grotesque',sans-serif; font-size:20px;">
-    </div>
-    <div class="abs" style="left:61px; top:9138px; width:594px;">
-      <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:rgba(255,255,255,0.8); margin-bottom:13px;">what are you building</p>
-      <input type="text" id="projectType" name="projectType" placeholder="Web development" required style="width:100%; height:60px; background:rgba(5,251,255,0.5); border:2px solid rgba(116,116,116,0.6); border-radius:10px; padding:0 20px; color:#fff; font-family:'Bricolage Grotesque',sans-serif; font-size:20px;">
-    </div>
-    <div class="abs" style="left:723px; top:9138px; width:643px;">
-      <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:24px; color:rgba(255,255,255,0.8); margin-bottom:13px;">Team Size</p>
-      <select id="teamSize" name="teamSize" style="width:100%; height:60px; background:#037e80; border:2px solid #f3f3f3; border-radius:10px; padding:0 20px; color:#fff; font-family:'Bricolage Grotesque',sans-serif; font-size:20px;">
-        <option>1-10 employees</option>
-        <option>11-50 employees</option>
-        <option>51-200 employees</option>
-        <option>200+ employees</option>
-      </select>
-    </div>
-    <div class="abs" style="left:61px; top:9302px; width:1305px; height:60px;">
-      <textarea id="projectDetails" name="projectDetails" required placeholder="A few lines about what are you trying to buid" style="width:100%; height:100%; background:rgba(5,251,255,0.5); border:2px solid rgba(116,116,116,0.6); border-radius:10px; padding:20px; color:#fff; font-family:'Bricolage Grotesque',sans-serif; font-size:20px; resize:none;"></textarea>
-    </div>
-    <div class="abs" id="contactStatus" style="left:61px; top:9376px; width:1305px; font-family:'Bricolage Grotesque',sans-serif; font-size:18px; display:none;"></div>
-    <div class="abs" style="left:433px; top:9402px; width:517px; display:flex; justify-content:center;">
-      <button type="submit" id="contactSubmitBtn" style="background:#037e80; border:none; border-radius:17px; padding:21px 44px; width:340px; height:70px; cursor:pointer;">
-        <span class="fvs14" id="contactSubmitLabel" style="font-family:'Bricolage Grotesque',sans-serif; font-weight:500; font-size:24px; color:#fff; white-space:nowrap;">Request my free audit</span>
-      </button>
-    </div>
-  </form>
+</div><!-- /.canvas -->
+</div><!-- /.scale-wrap -->
 
-  <script>
-    async function handleContactSubmit(event) {
-      event.preventDefault();
 
-      const form = document.getElementById('contactForm');
-      const statusEl = document.getElementById('contactStatus');
-      const btn = document.getElementById('contactSubmitBtn');
-      const label = document.getElementById('contactSubmitLabel');
+<!-- Contact Section -->
 
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      const email = document.getElementById('workEmail').value.trim();
-      const projectType = document.getElementById('projectType').value.trim();
-      const projectDetails = document.getElementById('projectDetails').value.trim();
+  <section id="contact" class="ct" aria-labelledby="ct-heading">
+      <div class="ct__wrap">
 
-      // Matches the exact payload shape expected by POST /api/contact in server.js
-      const payload = {
-        fullName: (firstName + ' ' + lastName).trim(),
-        email: email,
-        projectType: projectType,
-        projectDetails: projectDetails
-      };
+        <!-- Left: pitch copy -->
+        <div class="ct__pitch">
+          <h2 id="ct-heading">Let's build something measurable.</h2>
+          <p class="ct__lead">Tell us what you're building. You'll hear back within one business day with clear next steps.</p>
 
-      function showStatus(message, ok) {
-        statusEl.textContent = message;
-        statusEl.style.display = 'block';
-        statusEl.style.color = ok ? '#00d3d6' : '#ff6b6b';
-      }
+          <ul class="ct__list">
+            <li>
+              <strong>A free audit of your current setup</strong>
+              <span>Performance, structure and conversion gaps, in plain language.</span>
+            </li>
+            <li>
+              <strong>A prioritised plan</strong>
+              <span>What to fix first, what it costs and what it should return.</span>
+            </li>
+            <li>
+              <strong>No obligation</strong>
+              <span>Use the plan with us or with anyone else.</span>
+            </li>
+          </ul>
+        </div>
 
-      const originalLabel = label.textContent;
-      label.textContent = 'Sending...';
-      btn.disabled = true;
-      btn.style.opacity = '0.7';
-      btn.style.cursor = 'not-allowed';
+        <!-- Right: form card -->
+        <div class="ct__card">
+          <form id="contactForm" novalidate aria-label="Project enquiry form">
+            <div class="row">
+              <div class="f">
+                <input id="firstName" name="firstName" type="text" placeholder=" " autocomplete="given-name" required>
+                <label for="firstName">First name</label>
+                <small class="err"></small>
+              </div>
+              <div class="f">
+                <input id="lastName" name="lastName" type="text" placeholder=" " autocomplete="family-name" required>
+                <label for="lastName">Last name</label>
+                <small class="err"></small>
+              </div>
+            </div>
 
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+            <div class="f">
+              <input id="workEmail" name="workEmail" type="email" placeholder=" " autocomplete="email" required>
+              <label for="workEmail">Work email</label>
+              <small class="err"></small>
+            </div>
 
-        const data = await response.json();
+            <fieldset class="chips">
+              <legend>What are you building?</legend>
+              <label><input type="radio" name="projectType" value="Website" checked><span>Website</span></label>
+              <label><input type="radio" name="projectType" value="Web app"><span>Web app</span></label>
+              <label><input type="radio" name="projectType" value="Mobile app"><span>Mobile app</span></label>
+              <label><input type="radio" name="projectType" value="Growth / SEO"><span>Growth / SEO</span></label>
+              <label><input type="radio" name="projectType" value="Something else"><span>Something else</span></label>
+            </fieldset>
 
-        if (response.ok && data.success) {
-          showStatus(data.message || 'Your message has been sent successfully!', true);
-          form.reset();
-        } else {
-          showStatus(data.message || 'Something went wrong. Please try again.', false);
-        }
-      } catch (err) {
-        showStatus('Could not reach the server. Please try again later.', false);
-      } finally {
-        label.textContent = originalLabel;
-        btn.disabled = false;
-        btn.style.opacity = '1';
-        btn.style.cursor = 'pointer';
-      }
+            <fieldset class="chips">
+              <legend>Team size</legend>
+              <label><input type="radio" name="teamSize" value="1-10" checked><span>1&ndash;10</span></label>
+              <label><input type="radio" name="teamSize" value="11-50"><span>11&ndash;50</span></label>
+              <label><input type="radio" name="teamSize" value="51-200"><span>51&ndash;200</span></label>
+              <label><input type="radio" name="teamSize" value="200+"><span>200+</span></label>
+            </fieldset>
 
-      return false;
-    }
-  </script>
+            <div class="f">
+              <textarea id="projectDetails" name="projectDetails" rows="4" placeholder=" " minlength="10" required></textarea>
+              <label for="projectDetails">A few lines about your project</label>
+              <small class="err"></small>
+            </div>
 
-  <!-- Footer -->
-  <div class="abs" style="left:0; right:0; top:9672px; width:1440px; height:636.367px; background:#02313d; border-radius:50px 50px 0 0; overflow:hidden;">
+            <!-- Honeypot — hidden from real users, bots fill it in -->
+            <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <p id="contactStatus" class="status" role="alert"></p>
+
+            <button type="submit" id="contactSubmitBtn" class="btn">Request my free audit</button>
+            <p class="note">We only use your details to reply to this request.</p>
+          </form>
+
+          <!-- Success state -->
+          <div id="contactDone" class="done" hidden>
+            <h3>Request received.</h3>
+            <p>Thanks, <span id="doneName"></span>. We&rsquo;ll email you within one business day.</p>
+          </div>
+        </div>
+
+      </div>
+  </section>
+  
+  <!-- /#contact -->
+
+  <!-- Footer (scaled separately so contact stays in normal document flow) -->
+  <div class="footer-scale-wrap" id="footerScaleWrap">
+  <div class="footer-canvas" id="footerCanvas">
+  <div class="abs" style="left:0; right:0; top:0; width:1440px; height:636.367px; background:#02313d; border-radius:50px 50px 0 0; overflow:hidden;">
     <div class="abs" style="left:64px; top:54px; width:48px; height:65px; overflow:hidden;">
-      <img src="logo-icon.png" style="width:100%; height:100%; object-fit:contain;" alt="Code Metric logo">
+      <img src="logo-icon.webp" width="48" height="65" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:contain;" alt="Code Metric logo">
     </div>
     <p class="abs fvs14" style="left:122px; top:72px; font-family:'Bricolage Grotesque',sans-serif; font-weight:500; font-size:20px; color:#fff; white-space:nowrap;">Code Metric</p>
 
@@ -614,26 +1075,35 @@
       <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff;">codemetric28@gmail.com</p>
       <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff; margin-top:10px;">+91 9172470167</p>
       <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff; margin-top:10px;">Office Address</p>
-      <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff;">Office 520 , geras imperium rise , hinjwadi phase 2 — 411057</p>
+      <p class="fvs14" style="font-family:'Bricolage Grotesque',sans-serif; font-size:20px; color:#fff;">10th Floor - Office 1038 , geras imperium rise , hinjwadi phase 2 — 411057</p>
     </div>
 
     <p class="abs fvs14" style="left:49%; top:353.81px; transform:translateX(-50%); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:259px; color:#00d3d6; white-space:nowrap; line-height:1;">Codemetric</p>
   </div>
-
-</div>
-</div>
+  </div>
+  </div>
 
 <script>
   (function(){
     var canvas = document.getElementById('canvas');
     var wrap = document.getElementById('scaleWrap');
-    var naturalW = 1440, naturalH = 10230;
+    var footerCanvas = document.getElementById('footerCanvas');
+    var footerWrap = document.getElementById('footerScaleWrap');
+    var naturalW = 1440, naturalH = 8550, footerH = 636;
+    var resizeTimer = null;
     function resize(){
       var scale = window.innerWidth / naturalW;
       canvas.style.transform = 'scale(' + scale + ')';
       wrap.style.height = (naturalH * scale) + 'px';
+      if (footerCanvas && footerWrap) {
+        footerCanvas.style.transform = 'scale(' + scale + ')';
+        footerWrap.style.height = (footerH * scale) + 'px';
+      }
     }
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', function(){
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 100);
+    }, { passive: true });
     resize();
   })();
 </script>
@@ -682,6 +1152,8 @@
     let radius = 480;
     let rotation = 0;
     let paused = false;
+    let inView = false;
+    let rafId = 0;
     let lastTime = null;
     const degreesPerMs = 0.028;
 
@@ -721,6 +1193,11 @@
     }
 
     function tick(now) {
+      if (!inView) {
+        rafId = 0;
+        lastTime = null;
+        return;
+      }
       if (lastTime === null) lastTime = now;
       const dt = now - lastTime;
       lastTime = now;
@@ -732,7 +1209,13 @@
       }
 
       render();
-      requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function startLoop() {
+      if (rafId) return;
+      lastTime = null;
+      rafId = requestAnimationFrame(tick);
     }
 
     cardRefs.forEach((ref) => {
@@ -745,7 +1228,18 @@
     });
 
     render();
-    requestAnimationFrame(tick);
+
+    var servicesSection = document.getElementById('services');
+    if ('IntersectionObserver' in window && servicesSection) {
+      var io = new IntersectionObserver(function (entries) {
+        inView = entries[0] && entries[0].isIntersecting;
+        if (inView) startLoop();
+      }, { rootMargin: '120px 0px', threshold: 0.01 });
+      io.observe(servicesSection);
+    } else {
+      inView = true;
+      startLoop();
+    }
   })();
 </script>
 <script>
@@ -756,6 +1250,65 @@
     wcuWrap.addEventListener('mouseenter', function () { wcuWrap.classList.add('wcu-open'); });
     wcuWrap.addEventListener('mouseleave', function () { wcuWrap.classList.remove('wcu-open'); });
   })();
+</script>
+
+<script>
+(() => {
+  'use strict';
+
+  const ENDPOINT = '/api/contact';
+  const form   = document.getElementById('contactForm');
+  const btn    = document.getElementById('contactSubmitBtn');
+  const status = document.getElementById('contactStatus');
+  if (!form || !btn || !status) return;
+
+  function validate() {
+    let ok = true;
+    form.querySelectorAll('.f').forEach(f => {
+      const el    = f.querySelector('input, textarea');
+      const valid = el.checkValidity() && el.value.trim() !== '';
+      f.classList.toggle('bad', !valid);
+      f.querySelector('.err').textContent = valid ? '' :
+        el.type === 'email' ? 'Enter a valid work email.' : 'This field is required.';
+      ok = ok && valid;
+    });
+    return ok;
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    status.textContent = '';
+    if (!validate()) return;
+
+    const data = Object.fromEntries(new FormData(form));
+    if (data.website) return; // honeypot
+
+    btn.disabled    = true;
+    btn.textContent = 'Sending\u2026';
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          fullName:       ((data.firstName || '') + ' ' + (data.lastName || '')).trim(),
+          email:          data.workEmail,
+          projectType:    data.projectType,
+          projectDetails: data.projectDetails
+        })
+      });
+      if (!res.ok) throw new Error('Server error');
+
+      document.getElementById('doneName').textContent = data.firstName || '';
+      form.hidden = true;
+      document.getElementById('contactDone').hidden = false;
+    } catch {
+      status.textContent = "Couldn\u2019t send your request. Check your connection and try again.";
+      btn.disabled    = false;
+      btn.textContent = 'Request my free audit';
+    }
+  });
+})();
 </script>
 
 <!-- Use this code only when site on update  -->
@@ -773,7 +1326,7 @@
 <!--  -->
 
 
-<div id="fakeBlankOverlay"></div>
+<!-- <div id="fakeBlankOverlay"></div>
 <script>
   var blankOverlay = document.getElementById('fakeBlankOverlay');
   if (blankOverlay) {
@@ -781,6 +1334,8 @@
       blankOverlay.classList.add('show');
     }, 1500); // page shows for ~1.5s, then goes fully blank
   }
-</script>
+</script> -->
+
+<!-- Not in Use -->
 </body>
 </html>
